@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HAGE – OTAKU CULTURE / MUSIC & EMOTION</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Kaushan+Script&family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ===========================
+       CSS Variables & Reset
+    =========================== */
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #0f0f18;
+      --bg3: #13131f;
+      --purple: #8b2fc9;
+      --purple-light: #a855f7;
+      --purple-glow: #c084fc;
+      --accent: #7c3aed;
+      --white: #ffffff;
+      --gray: #a0a0b0;
+      --gray2: #6b6b80;
+      --card-bg: #0d0d1a;
+      --card-border: #1e1e30;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Noto Sans JP', sans-serif;
+      --font-ui: 'Space Grotesk', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ===========================
+       Header / Nav
+    =========================== */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(139, 47, 201, 0.15);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 4px;
+      color: var(--white);
+      text-shadow: 0 0 20px var(--purple), 0 0 40px var(--purple);
+      position: relative;
+    }
+    .logo::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), var(--purple-glow));
+      box-shadow: 0 0 8px var(--purple);
+    }
+
+    nav { display: flex; gap: 32px; }
+    nav a {
+      font-family: var(--font-ui);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray);
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+      position: relative;
+    }
+    nav a:hover, nav a.active { color: var(--white); }
+    nav a.active { color: var(--purple-light); }
+    nav a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0; right: 0;
+      height: 1px;
+      background: var(--purple-light);
+      box-shadow: 0 0 6px var(--purple-light);
+    }
+
+    /* ===========================
+       Hero
+    =========================== */
+    #hero {
+      position: relative;
+      min-height: 380px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--bg);
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 80% at 10% 40%, rgba(139,47,201,0.45) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 60% at 65% 80%, rgba(100,20,180,0.18) 0%, transparent 60%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(115deg, rgba(168,85,247,0.07) 0%, transparent 40%),
+        linear-gradient(250deg, rgba(192,132,252,0.05) 0%, transparent 50%);
+    }
+
+    .hero-bg-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, var(--bg) 100%);
+    }
+
+    .hero-neon-line {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, var(--purple) 30%, var(--purple-glow) 60%, transparent 100%);
+      box-shadow: 0 0 24px var(--purple), 0 0 60px rgba(139,47,201,0.4);
+    }
+
+    /* レーザーライン */
+    .hero-laser {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .hero-laser::before,
+    .hero-laser::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 140%;
+      top: -20%;
+    }
+    .hero-laser::before {
+      left: 55%;
+      background: linear-gradient(to bottom, transparent, rgba(168,85,247,0.35), rgba(192,132,252,0.15), transparent);
+      transform: rotate(-25deg);
+      transform-origin: top center;
+      box-shadow: 0 0 12px rgba(168,85,247,0.3), 0 0 30px rgba(139,47,201,0.15);
+    }
+    .hero-laser::after {
+      left: 72%;
+      background: linear-gradient(to bottom, transparent, rgba(139,47,201,0.25), rgba(168,85,247,0.1), transparent);
+      transform: rotate(-18deg);
+      transform-origin: top center;
+      box-shadow: 0 0 10px rgba(139,47,201,0.2);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 88px 80px 40px;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(64px, 9vw, 130px);
+      line-height: 0.88;
+      letter-spacing: 6px;
+      color: var(--white);
+      text-shadow:
+        0 0 20px rgba(255,255,255,0.9),
+        0 0 40px rgba(168,85,247,0.7),
+        0 0 80px rgba(139,47,201,0.5),
+        0 0 120px rgba(139,47,201,0.3);
+      margin-bottom: 20px;
+    }
+
+    .hero-sub {
+      font-family: var(--font-ui);
+      font-size: clamp(12px, 1.5vw, 16px);
+      font-weight: 700;
+      letter-spacing: 7px;
+      color: var(--purple-glow);
+      text-shadow:
+        0 0 10px var(--purple-light),
+        0 0 30px rgba(168,85,247,0.6);
+      line-height: 2;
+    }
+
+    /* ===========================
+       Section Common
+    =========================== */
+    section {
+      padding: 80px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Kaushan Script', cursive;
+      font-size: 36px;
+      color: var(--purple-light);
+      margin-bottom: 24px;
+      text-shadow: 0 0 20px rgba(168,85,247,0.5), 0 0 40px rgba(168,85,247,0.25);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 32px;
+    }
+
+    .see-all {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--gray2);
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+    .see-all:hover { color: var(--purple-light); }
+
+    /* ===========================
+       About Section
+    =========================== */
+    #about {
+      background: var(--bg2);
+      max-width: 100%;
+      padding: 64px 0 72px;
+    }
+    #about .inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .about-left {}
+
+    .about-avatar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+
+    .about-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--purple);
+      box-shadow: 0 0 20px rgba(139,47,201,0.5);
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+
+    .about-headline {
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--white);
+    }
+
+    .about-body {
+      font-size: 14px;
+      color: var(--gray);
+      line-height: 1.9;
+      margin-bottom: 28px;
+    }
+
+    .about-meta {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .about-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--gray);
+    }
+    .about-meta-item svg { color: var(--purple-light); }
+    .about-meta-item span { color: var(--white); font-weight: 500; font-size: 12px; display: block; }
+    .about-meta-item small { color: var(--gray2); font-size: 11px; }
+
+    .about-right {}
+
+    .about-right-title {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--gray2);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .activity-list { display: flex; flex-direction: column; gap: 16px; }
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .activity-item:hover { border-color: rgba(139,47,201,0.4); }
+    .activity-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      background: rgba(139,47,201,0.15);
+      border: 1px solid rgba(139,47,201,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .activity-icon svg { color: var(--purple-light); width: 16px; height: 16px; }
+    .activity-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .activity-desc { font-size: 12px; color: var(--gray); line-height: 1.6; }
+
+    /* ===========================
+       Carousel controls (shared)
+    =========================== */
+    .carousel-wrap { position: relative; }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--purple);
+      background: rgba(20,10,30,0.65);
+      color: var(--purple-light);
+      font-size: 22px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      transition: opacity 0.2s, background 0.2s, color 0.2s;
+    }
+    .carousel-arrow:hover { background: var(--purple); color: #fff; }
+    .carousel-arrow.is-hidden { opacity: 0; pointer-events: none; }
+    .carousel-arrow-left { left: 8px; }
+    .carousel-arrow-right { right: 8px; }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .carousel-dots .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--card-border);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .carousel-dots .dot.active {
+      background: var(--purple);
+      transform: scale(1.3);
+    }
+    @media (max-width: 768px) {
+      .carousel-arrow { width: 34px; height: 34px; font-size: 18px; }
+    }
+
+    /* ===========================
+       Favorite Works
+    =========================== */
+    #works { background: var(--bg); }
+
+    .works-scroll {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-top: 8px;
+      padding-bottom: 16px;
+      scroll-snap-type: x mandatory;
+      touch-action: pan-y;
+      scrollbar-width: none;
+    }
+    .works-scroll::-webkit-scrollbar { display: none; }
+    .works-scroll .work-card {
+      width: 350px;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+
+    .work-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+      cursor: pointer;
+    }
+    .work-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(139,47,201,0.2);
+    }
+
+    .work-thumb {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #1a1a2e 0%, #0d0d1a 100%);
+      position: relative;
+      overflow: hidden;
+      display: block;
+      cursor: pointer;
+    }
+    .work-thumb.is-disabled { cursor: default; }
+    .work-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s;
+    }
+    .work-card:hover .work-thumb img { transform: scale(1.05); }
+
+    .work-thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+    }
+
+    .work-info { padding: 14px; }
+    .work-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; line-height: 1.4; }
+    .work-desc { font-size: 12px; color: var(--gray); line-height: 1.6; margin-bottom: 10px; }
+
+    .card-icons {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .card-icons a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--card-border);
+      background: rgba(139,47,201,0.08);
+      color: var(--gray);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .card-icons a:hover {
+      border-color: var(--purple);
+      color: var(--purple-glow);
+      background: rgba(139,47,201,0.18);
+    }
+    .card-icons svg { width: 15px; height: 15px; fill: currentColor; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-family: var(--font-ui);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      color: var(--purple-glow);
+      background: rgba(139,47,201,0.12);
+      border: 1px solid rgba(139,47,201,0.3);
+      border-radius: 3px;
+      padding: 2px 7px;
+    }
+
+    /* ===========================
+       Oshi List
+    =========================== */
+    #oshi { background: var(--bg2); max-width: 100%; padding: 80px 0; }
+    #oshi .inner { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+    .oshi-scroll {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-top: 8px;
+      padding-bottom: 16px;
+      scroll-snap-type: x mandatory;
+      touch-action: pan-y;
+      scrollbar-width: none;
+    }
+    .oshi-scroll::-webkit-scrollbar { display: none; }
+
+    .oshi-scroll .work-card {
+      width: 350px;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+
+    .oshi-group-badge {
+      display: inline-block;
+      font-family: var(--font-ui);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      border-radius: 3px;
+      padding: 2px 8px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .oshi-group-badge.holo {
+      background: var(--purple-light);
+      color: var(--bg);
+    }
+    .oshi-group-badge.niji {
+      background: transparent;
+      color: var(--purple-light);
+      border: 1px solid rgba(168,85,247,0.5);
+    }
+
+    /* ===========================
+       DJ / Events
+    =========================== */
+    #dj { background: var(--bg2); max-width: 100%; padding: 80px 0; }
+    #dj .inner { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+    .events-scroll {
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-top: 8px;
+      padding-bottom: 16px;
+      scroll-snap-type: x mandatory;
+      touch-action: pan-y;
+      scrollbar-width: none;
+    }
+    .events-scroll::-webkit-scrollbar { display: none; }
+    .events-scroll .event-card {
+      width: 300px;
+      flex-shrink: 0;
+      scroll-snap-align: start;
+    }
+
+    .event-card {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      position: relative;
+      aspect-ratio: 4/3;
+      background: var(--card-bg);
+      transition: transform 0.3s;
+    }
+    .event-card:hover { transform: translateY(-4px); }
+    .event-card:hover .event-overlay { opacity: 1; }
+
+    .event-thumb-link {
+      position: absolute;
+      inset: 0;
+      display: block;
+      z-index: 1;
+      cursor: pointer;
+    }
+    .event-thumb-link.is-disabled { cursor: default; }
+    .event-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #0a0a12;
+    }
+
+    .event-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #1a0a2e, #0f0a1e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .event-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 60%, transparent 100%);
+      opacity: 0.85;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .event-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 16px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .event-info .card-icons { pointer-events: auto; }
+    .event-date {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      color: var(--purple-light);
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .event-name { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .event-venue { font-size: 12px; color: var(--gray); margin-bottom: 8px; }
+    .event-badge {
+      display: inline-block;
+      font-family: var(--font-ui);
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--bg);
+      background: var(--purple-light);
+      border-radius: 3px;
+      padding: 2px 8px;
+      font-weight: 700;
+    }
+
+    /* ===========================
+       Links (Now Learning は WORK MODE 実装時に復元予定)
+    =========================== */
+    #bottom { background: var(--bg); }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      max-width: 480px;
+    }
+
+    .learning-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .learning-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px;
+      transition: border-color 0.2s;
+    }
+    .learning-card:hover { border-color: rgba(139,47,201,0.4); }
+    .learning-icon {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+    .learning-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .learning-desc { font-size: 11px; color: var(--gray); line-height: 1.6; }
+
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .link-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .link-item:hover {
+      border-color: var(--purple);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(139,47,201,0.2);
+    }
+    .link-icon { font-size: 22px; }
+    .link-label { font-family: var(--font-ui); font-size: 11px; color: var(--gray); letter-spacing: 0.5px; }
+
+    /* ===========================
+       Footer
+    =========================== */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 100%;
+    }
+
+    footer p {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--gray2);
+    }
+
+    .footer-tagline {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--gray2);
+    }
+
+    /* ===========================
+       Glow divider
+    =========================== */
+    .glow-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(139,47,201,0.3) 0%, var(--purple) 20%, var(--purple-glow) 50%, var(--purple) 80%, rgba(139,47,201,0.3) 100%);
+      box-shadow: 0 0 20px rgba(139,47,201,0.5), 0 0 40px rgba(139,47,201,0.2);
+    }
+
+    /* ===========================
+       Scroll reveal
+    =========================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===========================
+       Responsive
+    =========================== */
+    @media (max-width: 1024px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      header { padding: 14px 20px; }
+      nav { display: none; }
+      .side-sns { display: none; }
+      #hero { min-height: 320px; }
+      .hero-content { padding: 72px 24px 32px; }
+      .about-grid { gap: 32px; }
+      .about-headline { font-size: 24px; }
+      section { padding: 60px 20px; }
+      .bottom-grid { grid-template-columns: 1fr; }
+      .links-grid { grid-template-columns: repeat(5, 1fr); }
+      #about .inner, #dj .inner, #oshi .inner { padding: 0 20px; }
+      .works-scroll .work-card,
+      .oshi-scroll .work-card {
+        width: clamp(220px, 78vw, 300px);
+      }
+      .events-scroll .event-card {
+        width: clamp(200px, 70vw, 280px);
+      }
+    }
+    @media (max-width: 480px) {
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="logo">HAGE</div>
+    <nav>
+      <a href="#hero" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#works">Favorite Works</a>
+      <a href="#oshi">Oshi List</a>
+      <a href="#dj">DJ / Events</a>
+      <a href="#links">Links</a>
+    </nav>
+  </header>
+
+
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-bg-gradient"></div>
+    <div class="hero-neon-line"></div>
+    <div class="hero-laser"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">HAGE</h1>
+      <div class="hero-sub">
+        OTAKU CULTURE<br>
+        MUSIC &amp; EMOTION
+      </div>
+    </div>
+  </section>
+
+  <div class="glow-divider"></div>
+
+  <!-- ===== ABOUT ===== -->
+  <div id="about">
+    <div class="inner">
+      <div class="section-label">About</div>
+      <div class="about-grid">
+        <div class="about-left reveal">
+          <div class="about-avatar-wrap">
+            <div class="about-avatar">🎧</div>
+            <div>
+              <h2 class="about-headline">オタクアンチエイジング布教中。</h2>
+            </div>
+          </div>
+          <p class="about-body">
+            2015年に京都でDJをはじめ、コロナ禍での活動休止を経て復活。爆踊りできる音楽・胸キュンのラブコメ・物語性のある作品や生き様、この三つがHAGEを動かしている。良質なラブコメで心身が若返る「オタクアンチエイジング」を提唱しながら、出会う人を仲間にしていくことが活動の原動力。友達、大募集中です。
+          </p>
+          <div class="about-meta">
+            <div class="about-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div>
+                <span>Osaka, Japan</span>
+                <small>拠点</small>
+              </div>
+            </div>
+            <div class="about-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <div>
+                <span>1991.10.26</span>
+                <small>誕生日</small>
+              </div>
+            </div>
+            <div class="about-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              <div>
+                <span>美少女コンテンツ / ラブコメ / Vtuber</span>
+                <small>推し</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="about-right reveal" style="transition-delay:0.15s">
+          <div class="about-right-title">活動のメインテーマ</div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              </div>
+              <div>
+                <div class="activity-title">A-POP DJ</div>
+                <div class="activity-desc">美少女コンテンツ楽曲を通じて、感情を共有したい</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              </div>
+              <div>
+                <div class="activity-title">Vtuber</div>
+                <div class="activity-desc">ただ壁として推しの活躍を見ていたい</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4v4l3 3"/></svg>
+              </div>
+              <div>
+                <div class="activity-title">オタクアンチエイジング</div>
+                <div class="activity-desc">ラブコメで恋愛のドキドキを摂取することは脳と体に良い</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="glow-divider"></div>
+
+  <!-- ===== FAVORITE WORKS ===== -->
+  <section id="works">
+    <div class="section-header">
+      <div class="section-label">Favorite Works</div>
+    </div>
+    <div class="carousel-wrap">
+      <button type="button" class="carousel-arrow carousel-arrow-left" aria-label="前へ">‹</button>
+      <div class="works-scroll" id="worksScroll">
+      <!-- Card 1 -->
+      <div class="work-card reveal">
+          <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="この青空に約束を― 記事（準備中）">
+            <img src="images/work1.png" alt="この青空に約束を―">
+          </a>
+        <div class="work-info">
+          <div class="work-title">この青空に約束を―</div>
+          <div class="work-desc">原点。頂点。</div>
+          <div class="tags">
+            <span class="tag">#美少女ゲーム</span>
+            <span class="tag">#丸戸史明</span>
+          </div>
+          <div class="card-icons">
+            <a href="https://www.entergram.co.jp/aozora_refine/" target="_blank" rel="noopener" aria-label="公式サイト">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.1 8.1 0 010-4h3.38a16.5 16.5 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.65 15.65 0 008.02 8zM12 19.96a14.7 14.7 0 01-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.36 14H9.64a14.66 14.66 0 010-4h4.72a14.66 14.66 0 010 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.5 16.5 0 000-4h3.38a8.1 8.1 0 010 4h-3.38z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="work-card reveal" style="transition-delay:0.1s">
+        <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="好きになるその瞬間を。 記事（準備中）">
+          <img src="images/work2.png" alt="好きになるその瞬間を。">
+        </a>
+        <div class="work-info">
+          <div class="work-title">好きになるその瞬間を。</div>
+          <div class="work-desc">これがアンチエイジング</div>
+          <div class="tags">
+            <span class="tag">#アニメ</span>
+            <span class="tag">#HoneyWorks</span>
+          </div>
+          <div class="card-icons">
+            <a href="https://www.honeyworks-movie.jp/2nd/" target="_blank" rel="noopener" aria-label="公式サイト">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.1 8.1 0 010-4h3.38a16.5 16.5 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.65 15.65 0 008.02 8zM12 19.96a14.7 14.7 0 01-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.36 14H9.64a14.66 14.66 0 010-4h4.72a14.66 14.66 0 010 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.5 16.5 0 000-4h3.38a8.1 8.1 0 010 4h-3.38z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="work-card reveal" style="transition-delay:0.2s">
+        <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="冴えない彼女の育てかた 記事（準備中）">
+          <img src="images/work3.png" alt="冴えない彼女の育てかた">
+        </a>
+        <div class="work-info">
+          <div class="work-title">冴えない彼女の育てかた</div>
+          <div class="work-desc">めんどくさい女は可愛い</div>
+          <div class="tags">
+            <span class="tag">#アニメ</span>
+            <span class="tag">#ラノベ</span>
+            <span class="tag">#丸戸史明</span>
+          </div>
+          <div class="card-icons">
+            <a href="https://promo.kadokawa.co.jp/fantasiabunko/sp/201211heroine/" target="_blank" rel="noopener" aria-label="公式サイト">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.1 8.1 0 010-4h3.38a16.5 16.5 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.65 15.65 0 008.02 8zM12 19.96a14.7 14.7 0 01-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.36 14H9.64a14.66 14.66 0 010-4h4.72a14.66 14.66 0 010 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.5 16.5 0 000-4h3.38a8.1 8.1 0 010 4h-3.38z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="work-card reveal" style="transition-delay:0.3s">
+        <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="銀色、遥か。 記事（準備中）">
+          <img src="images/work4.png" alt="銀色、遥か。">
+        </a>
+        <div class="work-info">
+          <div class="work-title">銀色、遥か。</div>
+          <div class="work-desc">結婚までしたいだろ、それは。</div>
+          <div class="tags">
+            <span class="tag">#美少女ゲーム</span>
+          </div>
+          <div class="card-icons">
+            <a href="https://toneworks.product.co.jp/ginharu/" target="_blank" rel="noopener" aria-label="公式サイト">
+              <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.1 8.1 0 010-4h3.38a16.5 16.5 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.65 15.65 0 008.02 8zM12 19.96a14.7 14.7 0 01-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.36 14H9.64a14.66 14.66 0 010-4h4.72a14.66 14.66 0 010 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.5 16.5 0 000-4h3.38a8.1 8.1 0 010 4h-3.38z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      </div>
+      <button type="button" class="carousel-arrow carousel-arrow-right" aria-label="次へ">›</button>
+    </div>
+    <div class="carousel-dots" data-for="worksScroll"></div>
+  </section>
+
+  <div class="glow-divider"></div>
+
+  <!-- ===== OSHI LIST ===== -->
+  <div id="oshi">
+    <div class="inner">
+      <div class="section-header">
+        <div class="section-label">Oshi List</div>
+      </div>
+      <div class="carousel-wrap">
+        <button type="button" class="carousel-arrow carousel-arrow-left" aria-label="前へ">‹</button>
+        <div class="oshi-scroll" id="oshiScroll">
+<div class="work-card reveal">
+          <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="桃鈴ねね 記事（準備中）">
+            <img src="images/oshi1.png" alt="桃鈴ねね">
+          </a>
+          <div class="work-info">
+            <div class="oshi-group-badge holo">hololive</div>
+            <div class="work-title">桃鈴ねね</div>
+            <div class="work-desc">いろいろあって大変なのに健気に頑張って偉い</div>
+            <div class="card-icons">
+              <a href="https://x.com/momosuzunene" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+              </a>
+              <a href="https://www.youtube.com/@MomosuzuNene" target="_blank" rel="noopener" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.6-.9-2.4c-.8-.9-1.8-.9-2.2-1C17.5 2.5 12 2.5 12 2.5h0s-5.5 0-8.4.3c-.4.1-1.4.1-2.2 1C.7 4.6.5 6.2.5 6.2S.3 8.1.3 10v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.4c.8.9 2 .9 2.5 1 1.8.2 7.6.3 7.6.3s5.5 0 8.4-.3c.4-.1 1.4-.1 2.2-1 .7-.8.9-2.4.9-2.4s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.7 14.6V7.9l6.4 3.4-6.4 3.3z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="work-card reveal" style="transition-delay:0.1s">
+          <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="ローレン・イロアス 記事（準備中）">
+            <img src="images/oshi4.png" alt="ローレン・イロアス">
+          </a>
+          <div class="work-info">
+            <div class="oshi-group-badge niji">にじさんじ</div>
+            <div class="work-title">ローレン・イロアス</div>
+            <div class="work-desc">お前のゲーム配信が一番おもろい</div>
+            <div class="card-icons">
+              <a href="https://x.com/Lauren_iroas" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+              </a>
+              <a href="https://www.youtube.com/@LaurenIroas" target="_blank" rel="noopener" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.6-.9-2.4c-.8-.9-1.8-.9-2.2-1C17.5 2.5 12 2.5 12 2.5h0s-5.5 0-8.4.3c-.4.1-1.4.1-2.2 1C.7 4.6.5 6.2.5 6.2S.3 8.1.3 10v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.4c.8.9 2 .9 2.5 1 1.8.2 7.6.3 7.6.3s5.5 0 8.4-.3c.4-.1 1.4-.1 2.2-1 .7-.8.9-2.4.9-2.4s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.7 14.6V7.9l6.4 3.4-6.4 3.3z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="work-card reveal" style="transition-delay:0.2s">
+          <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="響咲リオナ 記事（準備中）">
+            <img src="images/oshi2.png" alt="響咲リオナ">
+          </a>
+          <div class="work-info">
+            <div class="oshi-group-badge holo">hololive</div>
+            <div class="work-title">響咲リオナ</div>
+            <div class="work-desc">パフォーマンスが良すぎる</div>
+            <div class="card-icons">
+              <a href="https://x.com/isakiriona" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+              </a>
+              <a href="https://www.youtube.com/@IsakiRiona" target="_blank" rel="noopener" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.6-.9-2.4c-.8-.9-1.8-.9-2.2-1C17.5 2.5 12 2.5 12 2.5h0s-5.5 0-8.4.3c-.4.1-1.4.1-2.2 1C.7 4.6.5 6.2.5 6.2S.3 8.1.3 10v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.4c.8.9 2 .9 2.5 1 1.8.2 7.6.3 7.6.3s5.5 0 8.4-.3c.4-.1 1.4-.1 2.2-1 .7-.8.9-2.4.9-2.4s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.7 14.6V7.9l6.4 3.4-6.4 3.3z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="work-card reveal" style="transition-delay:0.3s">
+          <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="酒寄颯馬 記事（準備中）">
+            <img src="images/oshi5.png" alt="酒寄颯馬">
+          </a>
+          <div class="work-info">
+            <div class="oshi-group-badge niji">にじさんじ</div>
+            <div class="work-title">酒寄颯馬</div>
+            <div class="work-desc">一生味がする</div>
+            <div class="card-icons">
+              <a href="https://x.com/sakayori_soma" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+              </a>
+              <a href="https://www.youtube.com/@SakayoriSoma" target="_blank" rel="noopener" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.6-.9-2.4c-.8-.9-1.8-.9-2.2-1C17.5 2.5 12 2.5 12 2.5h0s-5.5 0-8.4.3c-.4.1-1.4.1-2.2 1C.7 4.6.5 6.2.5 6.2S.3 8.1.3 10v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.4c.8.9 2 .9 2.5 1 1.8.2 7.6.3 7.6.3s5.5 0 8.4-.3c.4-.1 1.4-.1 2.2-1 .7-.8.9-2.4.9-2.4s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.7 14.6V7.9l6.4 3.4-6.4 3.3z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="work-card reveal" style="transition-delay:0.4s">
+          <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="常闇トワ 記事（準備中）">
+            <img src="images/oshi3.png" alt="常闇トワ">
+          </a>
+          <div class="work-info">
+            <div class="oshi-group-badge holo">hololive</div>
+            <div class="work-title">常闇トワ</div>
+            <div class="work-desc">トワ様の勝利の瞬間を見たい</div>
+            <div class="card-icons">
+              <a href="https://x.com/tokoyamitowa" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+              </a>
+              <a href="https://www.youtube.com/@TokoyamiTowa" target="_blank" rel="noopener" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.6-.9-2.4c-.8-.9-1.8-.9-2.2-1C17.5 2.5 12 2.5 12 2.5h0s-5.5 0-8.4.3c-.4.1-1.4.1-2.2 1C.7 4.6.5 6.2.5 6.2S.3 8.1.3 10v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.4c.8.9 2 .9 2.5 1 1.8.2 7.6.3 7.6.3s5.5 0 8.4-.3c.4-.1 1.4-.1 2.2-1 .7-.8.9-2.4.9-2.4s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.7 14.6V7.9l6.4 3.4-6.4 3.3z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="work-card reveal" style="transition-delay:0.5s">
+          <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="七瀬すず菜 記事（準備中）">
+            <img src="images/oshi6.png" alt="七瀬すず菜">
+          </a>
+          <div class="work-info">
+            <div class="oshi-group-badge niji">にじさんじ</div>
+            <div class="work-title">七瀬すず菜</div>
+            <div class="work-desc">朝の女王、平日の救い。</div>
+            <div class="card-icons">
+              <a href="https://x.com/Suzuna_Nanase" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+              </a>
+              <a href="https://www.youtube.com/@NanaseSuzuna" target="_blank" rel="noopener" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"><path d="M23.5 6.2s-.2-1.6-.9-2.4c-.8-.9-1.8-.9-2.2-1C17.5 2.5 12 2.5 12 2.5h0s-5.5 0-8.4.3c-.4.1-1.4.1-2.2 1C.7 4.6.5 6.2.5 6.2S.3 8.1.3 10v1.9c0 1.9.2 3.8.2 3.8s.2 1.6.9 2.4c.8.9 2 .9 2.5 1 1.8.2 7.6.3 7.6.3s5.5 0 8.4-.3c.4-.1 1.4-.1 2.2-1 .7-.8.9-2.4.9-2.4s.2-1.9.2-3.8V10c0-1.9-.2-3.8-.2-3.8zM9.7 14.6V7.9l6.4 3.4-6.4 3.3z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        </div>
+        <button type="button" class="carousel-arrow carousel-arrow-right" aria-label="次へ">›</button>
+      </div>
+      <div class="carousel-dots" data-for="oshiScroll"></div>
+    </div>
+  </div>
+  <div id="dj">
+    <div class="inner">
+      <div class="section-header">
+        <div class="section-label">DJ / Events</div>
+        <a href="#" class="see-all">出演イベント一覧 →</a>
+      </div>
+      <div class="carousel-wrap">
+        <button type="button" class="carousel-arrow carousel-arrow-left" aria-label="前へ">‹</button>
+        <div class="events-scroll" id="eventsScroll">
+<div class="event-card reveal">
+          <a class="event-thumb-link is-disabled" href="#" onclick="return false;" aria-label="BSJ -BiShoJo愛好会- 5th 記事（準備中）">
+            <img class="event-thumb" src="images/event2.jpg" alt="BSJ -BiShoJo愛好会- 5th">
+          </a>
+          <div class="event-overlay"></div>
+          <div class="event-info">
+            <div class="event-date">2026.08.30 (Sun) 13:00〜</div>
+            <div class="event-name">BSJ -BiShoJo愛好会- 5th</div>
+            <div class="event-venue">@ 日本橋Bar Guild</div>
+            <span class="event-badge">出演</span>
+            <div class="card-icons">
+              <a href="https://twipla.jp/events/691547" target="_blank" rel="noopener" aria-label="イベントページ">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.1 8.1 0 010-4h3.38a16.5 16.5 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.65 15.65 0 008.02 8zM12 19.96a14.7 14.7 0 01-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.36 14H9.64a14.66 14.66 0 010-4h4.72a14.66 14.66 0 010 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.5 16.5 0 000-4h3.38a8.1 8.1 0 010 4h-3.38z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="event-card reveal" style="transition-delay:0.1s">
+          <a class="event-thumb-link is-disabled" href="#" onclick="return false;" aria-label="ほろくら 記事（準備中）">
+            <img class="event-thumb" src="images/event1.jpg" alt="ほろくら">
+          </a>
+          <div class="event-overlay"></div>
+          <div class="event-info">
+            <div class="event-date">2026.08.09 (Sun) 13:00〜</div>
+            <div class="event-name">ほろくら</div>
+            <div class="event-venue">@ 日本橋Bar Guild</div>
+            <span class="event-badge">出演</span>
+            <div class="card-icons">
+              <a href="https://twipla.jp/events/730679/" target="_blank" rel="noopener" aria-label="イベントページ">
+                <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.1 8.1 0 010-4h3.38a16.5 16.5 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.65 15.65 0 008.02 8zM12 19.96a14.7 14.7 0 01-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.36 14H9.64a14.66 14.66 0 010-4h4.72a14.66 14.66 0 010 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.5 16.5 0 000-4h3.38a8.1 8.1 0 010 4h-3.38z"/></svg>
+              </a>
+              <a href="https://x.com/holokurav" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="event-card reveal" style="transition-delay:0.2s">
+          <a class="event-thumb-link is-disabled" href="#" onclick="return false;" aria-label="ミミミュ♪ ～MEET MEAL MUSIC～ 記事（準備中）">
+            <img class="event-thumb" src="images/event3.jpg" alt="ミミミュ♪ ～MEET MEAL MUSIC～">
+          </a>
+          <div class="event-overlay"></div>
+          <div class="event-info">
+            <div class="event-date">2026.04.04 (Sat) 12:30〜</div>
+            <div class="event-name">ミミミュ♪ ～MEET MEAL MUSIC～</div>
+            <div class="event-venue">@ タグボート大正</div>
+            <span class="event-badge">出演</span>
+            <div class="card-icons">
+              <a href="https://x.com/meetmealmusic" target="_blank" rel="noopener" aria-label="X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 2H22l-7.2 8.2L23 22h-6.9l-5.4-7-6.2 7H1.3l7.7-8.8L1 2h7l4.9 6.4L18.9 2zm-2.4 18h1.9L7.6 4H5.6l10.9 16z"/></svg>
+              </a>
+              <a href="https://www.instagram.com/meetmealmusic" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2 0 1.9.2 2.4.4.6.2 1 .5 1.4 1 .4.4.7.8 1 1.4.2.5.4 1.2.4 2.4.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c0 1.2-.2 1.9-.4 2.4-.2.6-.5 1-1 1.4-.4.4-.8.7-1.4 1-.5.2-1.2.4-2.4.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2 0-1.9-.2-2.4-.4-.6-.2-1-.5-1.4-1-.4-.4-.7-.8-1-1.4-.2-.5-.4-1.2-.4-2.4C2 15.6 2 15.2 2 12s0-3.6.1-4.8c0-1.2.2-1.9.4-2.4.2-.6.5-1 1-1.4.4-.4.8-.7 1.4-1 .5-.2 1.2-.4 2.4-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1 0-1.5.2-1.9.3-.5.2-.8.4-1.1.7-.3.3-.5.6-.7 1.1-.1.4-.3.9-.3 1.9-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c0 1 .2 1.5.3 1.9.2.5.4.8.7 1.1.3.3.6.5 1.1.7.4.1.9.3 1.9.3 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1 0 1.5-.2 1.9-.3.5-.2.8-.4 1.1-.7.3-.3.5-.6.7-1.1.1-.4.3-.9.3-1.9.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c0-1-.2-1.5-.3-1.9-.2-.5-.4-.8-.7-1.1-.3-.3-.6-.5-1.1-.7-.4-.1-.9-.3-1.9-.3-1.2-.1-1.6-.1-4.7-.1zm0 3.5a5.5 5.5 0 110 11 5.5 5.5 0 010-11zm0 1.8a3.7 3.7 0 100 7.4 3.7 3.7 0 000-7.4zm5.7-3.3a1.3 1.3 0 110 2.6 1.3 1.3 0 010-2.6z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        </div>
+        <button type="button" class="carousel-arrow carousel-arrow-right" aria-label="次へ">›</button>
+      </div>
+      <div class="carousel-dots" data-for="eventsScroll"></div>
+    </div>
+  </div>
+  <!--
+    Now Learning セクションはWORK MODE実装時にここへ復元予定。
+    AI活用・Web制作・自動化・効率化の3項目はWORK MODE側のコンテンツとして再利用する。
+
+    <div class="section-label">Now Learning</div>
+    <div class="learning-grid reveal">
+      <div class="learning-card">
+        <div class="learning-icon">🤖</div>
+        <div class="learning-title">AI活用</div>
+        <div class="learning-desc">Stable Diffusion などで画像生成や自動化を学習中</div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-icon">💻</div>
+        <div class="learning-title">Web制作</div>
+        <div class="learning-desc">Astro / Tailwind CSS でモダンなサイト制作に挑戦中</div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-icon">⚙️</div>
+        <div class="learning-title">自動化・効率化</div>
+        <div class="learning-desc">スクリプトやツールで作業の自動化を研究中</div>
+      </div>
+    </div>
+  -->
+  <section id="bottom">
+    <div class="bottom-grid">
+      <div id="links">
+        <div class="section-label">Links</div>
+        <div class="links-grid reveal">
+          <a href="https://x.com/HAGE00675" target="_blank" rel="noopener" class="link-item">
+            <div class="link-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <span class="link-label">X</span>
+          </a>
+          <a href="https://www.instagram.com/yusuke00675/" target="_blank" rel="noopener" class="link-item">
+            <div class="link-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <span class="link-label">Instagram</span>
+          </a>
+          <a href="https://www.mixcloud.com/HAGE00675/" target="_blank" rel="noopener" class="link-item">
+            <div class="link-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M15.76 8.34a5.4 5.4 0 0 0-3.76-1.54 5.42 5.42 0 0 0-5.42 5.42 5.42 5.42 0 0 0 5.42 5.42c1.57 0 2.99-.67 4-1.73l1.44 1.44A7.38 7.38 0 0 1 12 19.64 7.42 7.42 0 0 1 4.58 12.22 7.42 7.42 0 0 1 12 4.8c2.05 0 3.91.83 5.26 2.18l-1.5 1.36zM18.5 8V5.5H21V8h2.5v2H21v2.5h-2.5V10H16V8h2.5z"/></svg>
+            </div>
+            <span class="link-label">Mixcloud</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>© HAGE</p>
+    <p class="footer-tagline">オタクカルチャー、音楽、そして感情を記録する場所。</p>
+    <p>Built with ♥</p>
+  </footer>
+
+  <!-- ===== JS ===== -->
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Drag scroll for horizontal scroll areas
+    document.querySelectorAll('.works-scroll, .oshi-scroll, .events-scroll').forEach(el => {
+      let isDown = false, startX, scrollLeft;
+      el.addEventListener('mousedown', e => {
+        isDown = true;
+        el.style.cursor = 'grabbing';
+        startX = e.pageX - el.offsetLeft;
+        scrollLeft = el.scrollLeft;
+      });
+      el.addEventListener('mouseleave', () => { isDown = false; el.style.cursor = 'grab'; });
+      el.addEventListener('mouseup', () => { isDown = false; el.style.cursor = 'grab'; });
+      el.addEventListener('mousemove', e => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - el.offsetLeft;
+        el.scrollLeft = scrollLeft - (x - startX);
+      });
+      el.style.cursor = 'grab';
+
+      // Touch: lock to horizontal or vertical per-gesture, so horizontal
+      // swipes move the carousel and vertical swipes scroll the page natively.
+      let touchStartX = 0, touchStartY = 0, touchScrollLeft = 0, touchDirection = null;
+      el.addEventListener('touchstart', e => {
+        const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+        touchScrollLeft = el.scrollLeft;
+        touchDirection = null;
+      }, { passive: true });
+      el.addEventListener('touchmove', e => {
+        const t = e.touches[0];
+        const deltaX = t.clientX - touchStartX;
+        const deltaY = t.clientY - touchStartY;
+        if (touchDirection === null && (Math.abs(deltaX) > 8 || Math.abs(deltaY) > 8)) {
+          touchDirection = Math.abs(deltaX) > Math.abs(deltaY) ? 'horizontal' : 'vertical';
+        }
+        if (touchDirection === 'horizontal') {
+          e.preventDefault();
+          el.scrollLeft = touchScrollLeft - deltaX;
+        }
+        // vertical: do nothing, let the browser scroll the page as usual
+      }, { passive: false });
+    });
+
+    // Carousel arrows, position dots, and wheel-to-horizontal-scroll
+    // (replaces the native scrollbar across Favorite Works / Oshi List / DJ-Events)
+    function setupCarousel(scrollId) {
+      const scrollEl = document.getElementById(scrollId);
+      if (!scrollEl) return;
+      const wrap = scrollEl.closest('.carousel-wrap');
+      const leftBtn = wrap ? wrap.querySelector('.carousel-arrow-left') : null;
+      const rightBtn = wrap ? wrap.querySelector('.carousel-arrow-right') : null;
+      const dotsEl = document.querySelector('.carousel-dots[data-for="' + scrollId + '"]');
+
+      function stepWidth() {
+        const card = scrollEl.querySelector('.work-card, .event-card');
+        const gap = parseInt(getComputedStyle(scrollEl).gap, 10) || 16;
+        return card ? card.offsetWidth + gap : scrollEl.clientWidth;
+      }
+
+      function cardCount() {
+        return scrollEl.querySelectorAll('.work-card, .event-card').length;
+      }
+
+      function buildDots() {
+        if (!dotsEl) return;
+        dotsEl.innerHTML = '';
+        const count = Math.max(1, cardCount());
+        for (let i = 0; i < count; i++) {
+          const dot = document.createElement('span');
+          dot.className = 'dot';
+          dotsEl.appendChild(dot);
+        }
+      }
+
+      function updateDots() {
+        if (!dotsEl) return;
+        const dots = dotsEl.querySelectorAll('.dot');
+        if (!dots.length) return;
+        const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+        let index;
+        if (scrollEl.scrollLeft >= maxScroll - 4) {
+          index = dots.length - 1;
+        } else {
+          index = Math.round(scrollEl.scrollLeft / stepWidth());
+        }
+        index = Math.max(0, Math.min(dots.length - 1, index));
+        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+      }
+
+      function updateArrows() {
+        const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+        if (leftBtn) leftBtn.classList.toggle('is-hidden', scrollEl.scrollLeft <= 4);
+        if (rightBtn) rightBtn.classList.toggle('is-hidden', scrollEl.scrollLeft >= maxScroll - 4);
+      }
+
+      if (leftBtn) leftBtn.addEventListener('click', () => {
+        scrollEl.scrollBy({ left: -stepWidth(), behavior: 'smooth' });
+      });
+      if (rightBtn) rightBtn.addEventListener('click', () => {
+        scrollEl.scrollBy({ left: stepWidth(), behavior: 'smooth' });
+      });
+
+      let ticking = false;
+      scrollEl.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          updateDots();
+          updateArrows();
+          ticking = false;
+        });
+      });
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { buildDots(); updateDots(); updateArrows(); }, 150);
+      });
+
+      buildDots();
+      updateDots();
+      updateArrows();
+    }
+    setupCarousel('worksScroll');
+    setupCarousel('oshiScroll');
+    setupCarousel('eventsScroll');
+
+    const sections = document.querySelectorAll('section[id], div[id]');
+    const navLinks = document.querySelectorAll('nav a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => {
+            a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+          });
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(s => navObserver.observe(s));
+  </script>
+
+</body>
+</html>
