@@ -315,6 +315,49 @@
     .about-meta-item span { color: var(--white); font-weight: 500; font-size: 12px; display: block; }
     .about-meta-item small { color: var(--gray2); font-size: 11px; }
 
+    .about-social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+      margin-top: 24px;
+    }
+    .about-social-link {
+      width: 44px;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(13,13,26,0.86);
+      border: 1px solid var(--card-border);
+      border-radius: 50%;
+      color: var(--gray);
+      transition: border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .about-social-link:hover,
+    .about-social-link:focus-visible {
+      border-color: var(--purple);
+      color: var(--white);
+      outline: none;
+      box-shadow: 0 0 16px rgba(139,47,201,0.28);
+      transform: translateY(-2px);
+    }
+    .about-social-link svg {
+      width: 21px;
+      height: 21px;
+      flex-shrink: 0;
+    }
+    .about-social-link .mixcloud-mark {
+      width: 30px;
+      height: auto;
+    }
+    .about-note-logo {
+      font-family: var(--font-ui);
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--white);
+    }
+
     .about-right {}
 
     .about-right-title {
@@ -707,6 +750,10 @@
       }
     }
     @media (max-width: 480px) {
+      .about-social-link { width: 40px; height: 40px; }
+      .about-social-link svg { width: 19px; height: 19px; }
+      .about-social-link .mixcloud-mark { width: 27px; height: auto; }
+      .about-note-logo { font-size: 20px; }
     }
   </style>
 </head>
@@ -781,6 +828,20 @@
                 <small>推し</small>
               </div>
             </div>
+          </div>
+          <div class="about-social-links" aria-label="外部メディアへのリンク">
+            <a href="https://x.com/HAGE00675" target="_blank" rel="noopener" class="about-social-link" aria-label="Xを開く" title="X">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/yusuke00675/" target="_blank" rel="noopener" class="about-social-link" aria-label="Instagramを開く" title="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://www.mixcloud.com/HAGE00675/" target="_blank" rel="noopener" class="about-social-link" aria-label="Mixcloudを開く" title="Mixcloud">
+              <svg class="mixcloud-mark" viewBox="0 0 68.6858 20" fill="currentColor" aria-hidden="true"><path d="M22.8578 19.7241H19.2953V3.50094L19.9581 1.18294H18.8088L14.7166 19.7241H8.16859L4.04884 1.18294H2.92731L3.56254 3.50094V19.7241H0V0.275862H7.04632L10.9726 18.8171H11.8851L15.8112 0.275862H22.8578V19.7241ZM68.6858 15.5448V19.6275L59.4269 12.978H58.4319L49.2005 19.6275V15.5441L57.0223 10L49.2005 4.45589V0.372493L58.4319 7.04945H59.4269L68.6858 0.372493V4.4553L60.8365 10L68.6858 15.5448ZM26.6283 11.7703H46.1653V8.22973H26.6283V11.7703Z"/></svg>
+            </a>
+            <a href="https://note.com/hage_yusuke" target="_blank" rel="noopener" class="about-social-link" aria-label="noteを開く" title="note">
+              <span class="about-note-logo" aria-hidden="true">n</span>
+            </a>
           </div>
         </div>
 
@@ -1148,7 +1209,7 @@
           </a>
           <a href="https://www.mixcloud.com/HAGE00675/" target="_blank" rel="noopener" class="link-item">
             <div class="link-icon">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M15.76 8.34a5.4 5.4 0 0 0-3.76-1.54 5.42 5.42 0 0 0-5.42 5.42 5.42 5.42 0 0 0 5.42 5.42c1.57 0 2.99-.67 4-1.73l1.44 1.44A7.38 7.38 0 0 1 12 19.64 7.42 7.42 0 0 1 4.58 12.22 7.42 7.42 0 0 1 12 4.8c2.05 0 3.91.83 5.26 2.18l-1.5 1.36zM18.5 8V5.5H21V8h2.5v2H21v2.5h-2.5V10H16V8h2.5z"/></svg>
+              <svg width="30" height="10" viewBox="0 0 68.6858 20" fill="currentColor" aria-hidden="true"><path d="M22.8578 19.7241H19.2953V3.50094L19.9581 1.18294H18.8088L14.7166 19.7241H8.16859L4.04884 1.18294H2.92731L3.56254 3.50094V19.7241H0V0.275862H7.04632L10.9726 18.8171H11.8851L15.8112 0.275862H22.8578V19.7241ZM68.6858 15.5448V19.6275L59.4269 12.978H58.4319L49.2005 19.6275V15.5441L57.0223 10L49.2005 4.45589V0.372493L58.4319 7.04945H59.4269L68.6858 0.372493V4.4553L60.8365 10L68.6858 15.5448ZM26.6283 11.7703H46.1653V8.22973H26.6283V11.7703Z"/></svg>
             </div>
             <span class="link-label">Mixcloud</span>
           </a>
