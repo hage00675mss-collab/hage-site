@@ -491,6 +491,16 @@
       cursor: pointer;
     }
     .work-thumb.is-disabled { cursor: default; }
+    .work-thumb-popup {
+      border: 0;
+      color: inherit;
+      font: inherit;
+      text-align: inherit;
+    }
+    .work-thumb-popup:focus-visible {
+      outline: 3px solid var(--purple-glow);
+      outline-offset: -3px;
+    }
     .work-thumb img {
       width: 100%;
       height: 100%;
@@ -498,6 +508,69 @@
       transition: transform 0.4s;
     }
     .work-card:hover .work-thumb img { transform: scale(1.05); }
+
+    .event-setlist-modal {
+      position: fixed;
+      inset: 0;
+      width: fit-content;
+      height: fit-content;
+      max-width: 92vw;
+      max-height: 92dvh;
+      margin: auto;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      overflow: visible;
+    }
+    .event-setlist-modal::backdrop { background: rgba(0, 0, 0, 0.78); }
+    .event-setlist-modal-content {
+      position: relative;
+      max-width: 92vw;
+      max-height: 92dvh;
+      border: 1px solid rgba(192, 132, 252, 0.7);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg2);
+      box-shadow: 0 0 36px rgba(139, 47, 201, 0.45);
+    }
+    .event-setlist-modal img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: calc(92vw - 2px);
+      max-height: calc(92dvh - 2px);
+      object-fit: contain;
+    }
+    .event-setlist-modal-close {
+      position: absolute;
+      top: clamp(8px, 1.5vw, 16px);
+      right: clamp(8px, 1.5vw, 16px);
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      border-radius: 50%;
+      background: rgba(10, 10, 15, 0.9);
+      color: var(--white);
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .event-setlist-modal-close:hover,
+    .event-setlist-modal-close:focus-visible {
+      background: var(--purple);
+      outline: none;
+    }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
 
     .work-thumb-placeholder {
       width: 100%;
@@ -1126,9 +1199,9 @@
           </div>
         </div>
         <div class="work-card reveal" style="transition-delay:0.1s">
-          <a class="work-thumb is-disabled" href="#" onclick="return false;" aria-label="ほろくら 記事（準備中）">
+          <button type="button" class="work-thumb work-thumb-popup" data-modal-open="horokura-setlist-modal" aria-label="ほろくらのDJセットリストを表示">
             <img src="images/event1.jpg" alt="ほろくら">
-          </a>
+          </button>
           <div class="work-info">
             <div class="work-title">ほろくら</div>
             <div class="work-desc">2026.08.09 (Sun) 13:00〜　@ 日本橋Bar Guild</div>
@@ -1190,6 +1263,15 @@
       </div>
     </div>
   -->
+
+  <dialog id="horokura-setlist-modal" class="event-setlist-modal" aria-labelledby="horokura-setlist-title">
+    <div class="event-setlist-modal-content">
+      <h2 id="horokura-setlist-title" class="sr-only">ほろくら DJセットリスト</h2>
+      <button type="button" class="event-setlist-modal-close" aria-label="セットリストを閉じる" autofocus>×</button>
+      <img src="images/horokura-dj-setlist.png" alt="ほろくら DJセットリスト">
+    </div>
+  </dialog>
+
   <section id="bottom">
     <div class="bottom-grid">
       <div id="links">
@@ -1369,6 +1451,19 @@
     setupCarousel('worksScroll');
     setupCarousel('oshiScroll');
     setupCarousel('eventsScroll');
+
+    // ほろくら DJセットリストのポップアップ
+    document.querySelectorAll('[data-modal-open]').forEach(trigger => {
+      const dialog = document.getElementById(trigger.dataset.modalOpen);
+      if (!dialog) return;
+
+      const closeButton = dialog.querySelector('.event-setlist-modal-close');
+      trigger.addEventListener('click', () => dialog.showModal());
+      closeButton.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', event => {
+        if (event.target === dialog) dialog.close();
+      });
+    });
 
     const sections = document.querySelectorAll('section[id], div[id]');
     const navLinks = document.querySelectorAll('nav a');
