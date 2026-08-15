@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DJ HISTORY – HAGE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --bg:#0a0a0f; --bg2:#0f0f18; --purple:#8b2fc9; --purple-light:#a855f7; --purple-glow:#c084fc; --white:#fff; --gray:#a0a0b0; --gray2:#6b6b80; --card-bg:#0d0d1a; --card-border:#1e1e30; --font-display:'Bebas Neue',sans-serif; --font-body:'Noto Sans JP',sans-serif; --font-ui:'Space Grotesk',sans-serif; }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { background:var(--bg); }
+    body { min-width:0; overflow-x:hidden; background:radial-gradient(ellipse at 80% 0%,rgba(139,47,201,.16),transparent 35%),var(--bg); color:var(--white); font-family:var(--font-body); line-height:1.7; }
+    a { color:inherit; text-decoration:none; }
+    .page { width:min(1200px,calc(100% - 80px)); margin:0 auto; padding:42px 0 84px; }
+    .top-link { display:inline-flex; align-items:center; gap:8px; color:var(--gray); font-family:var(--font-ui); font-size:13px; letter-spacing:.8px; transition:color .2s; }
+    .top-link:hover { color:var(--purple-glow); }
+    .eyebrow { margin-top:58px; color:var(--purple-glow); font-family:var(--font-ui); font-size:12px; font-weight:700; letter-spacing:4px; }
+    h1 { margin:4px 0 42px; font-family:var(--font-display); font-size:clamp(58px,9vw,112px); font-weight:400; letter-spacing:4px; line-height:.95; text-shadow:0 0 20px rgba(255,255,255,.25),0 0 50px rgba(168,85,247,.35); }
+    .tabs { display:flex; gap:10px; overflow-x:auto; padding:3px 0 18px; border-bottom:1px solid rgba(192,132,252,.2); scrollbar-width:thin; scrollbar-color:var(--purple) transparent; }
+    .year-tab { flex:0 0 auto; min-width:96px; padding:10px 16px; border:1px solid transparent; border-radius:999px; background:transparent; color:var(--gray); cursor:pointer; font-family:var(--font-ui); font-size:14px; font-weight:700; transition:background .2s,color .2s,border-color .2s,transform .2s; }
+    .year-tab:hover { border-color:rgba(192,132,252,.45); color:var(--white); transform:translateY(-1px); }
+    .year-tab[aria-selected="true"] { background:var(--purple-light); border-color:var(--purple-glow); color:var(--white); box-shadow:0 0 22px rgba(168,85,247,.34); }
+    .history-header { display:flex; align-items:baseline; justify-content:space-between; gap:20px; padding:34px 0 20px; }
+    .history-header h2 { font-family:var(--font-display); font-size:36px; font-weight:400; letter-spacing:2px; }
+    .history-count { color:var(--gray); font-family:var(--font-ui); font-size:12px; letter-spacing:1.5px; white-space:nowrap; }
+    .event-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; }
+    .event-card { display:block; min-width:0; overflow:hidden; border:1px solid var(--card-border); border-radius:9px; background:var(--card-bg); box-shadow:0 10px 24px rgba(0,0,0,.17); transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease; }
+    a.event-card:hover { border-color:rgba(192,132,252,.65); box-shadow:0 16px 32px rgba(0,0,0,.35),0 0 22px rgba(139,47,201,.18); transform:scale(1.025); }
+    article.event-card:hover { border-color:rgba(192,132,252,.48); box-shadow:0 16px 32px rgba(0,0,0,.28),0 0 18px rgba(139,47,201,.14); transform:scale(1.025); }
+    .event-card:focus-visible { outline:3px solid var(--purple-glow); outline-offset:3px; }
+    .event-image { position:relative; aspect-ratio:4 / 5; overflow:hidden; background:linear-gradient(135deg,#21112f,#10101e); }
+    .event-image img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s ease; }
+    .event-card:hover .event-image img { transform:scale(1.04); }
+    .event-image-fallback { display:none; position:absolute; inset:0; align-items:center; justify-content:center; padding:20px; color:var(--gray); font-family:var(--font-ui); font-size:12px; text-align:center; }
+    .event-image.is-fallback .event-image-fallback { display:flex; }
+    .event-info { min-height:116px; padding:15px 16px 17px; }
+    .event-date { color:var(--purple-glow); font-family:var(--font-ui); font-size:12px; font-weight:700; letter-spacing:1px; }
+    .event-title { margin-top:5px; font-size:15px; font-weight:700; line-height:1.55; overflow-wrap:anywhere; }
+    .event-link-note { margin-top:7px; color:var(--gray2); font-family:var(--font-ui); font-size:10px; letter-spacing:1px; }
+    .more-wrap { display:flex; justify-content:center; padding-top:30px; }
+    .more-button { min-width:160px; padding:11px 20px; border:1px solid rgba(192,132,252,.5); border-radius:999px; background:rgba(139,47,201,.12); color:var(--white); cursor:pointer; font-family:var(--font-ui); font-size:13px; letter-spacing:1px; transition:background .2s,transform .2s; }
+    .more-button:hover { background:rgba(139,47,201,.35); transform:translateY(-1px); }
+    @media (max-width:1000px) { .event-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+    @media (max-width:760px) { .page { width:min(100% - 40px,600px); padding-top:28px; } .eyebrow { margin-top:45px; } h1 { margin-bottom:32px; } .tabs { margin-right:-20px; padding-right:20px; } .year-tab { min-width:84px; padding:9px 14px; } .event-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; } .event-info { min-height:108px; padding:13px; } .event-title { font-size:14px; } }
+    @media (max-width:540px) { .event-grid { grid-template-columns:1fr; } .event-image { aspect-ratio:16 / 10; } .event-info { min-height:0; } }
+  </style>
+  <script src="../dj-events.js"></script>
+</head>
+<body>
+  <main class="page">
+    <a class="top-link" href="../">← トップ</a>
+    <p class="eyebrow">DJ HAGE / ARCHIVE</p>
+    <h1>DJ HISTORY</h1>
+    <div class="tabs" id="year-tabs" role="tablist" aria-label="出演年"></div>
+    <div class="history-header">
+      <h2 id="selected-year"></h2>
+      <p class="history-count" id="year-count"></p>
+    </div>
+    <section id="event-list" class="event-grid" aria-live="polite"></section>
+    <div class="more-wrap"><button class="more-button" id="more-button" type="button" hidden>さらに表示</button></div>
+  </main>
+  <script>
+    const historyEvents = [...window.DJ_HISTORY_EVENTS].sort((a, b) => b.date.localeCompare(a.date));
+    const years = [...new Set(historyEvents.map((event) => event.date.slice(0, 4)))];
+    const pageSize = 8;
+    let selectedYear = years[0];
+    let visibleCount = pageSize;
+
+    const escapeHtml = (value) => value.replace(/[&<>'"]/g, (character) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[character]);
+    // Cloudflare Pagesではルート相対、file:// での確認時はこのページからの相対パスを使う。
+    const rootAsset = (path) => location.protocol === 'file:' ? `../${path}` : `/${path}`;
+    const eventsForYear = () => historyEvents.filter((event) => event.date.startsWith(selectedYear));
+
+    function renderTabs() {
+      document.getElementById('year-tabs').innerHTML = years.map((year) => {
+        const count = historyEvents.filter((event) => event.date.startsWith(year)).length;
+        return `<button class="year-tab" type="button" role="tab" aria-selected="${year === selectedYear}" data-year="${year}">${year} (${count})</button>`;
+      }).join('');
+      document.querySelectorAll('.year-tab').forEach((button) => button.addEventListener('click', () => {
+        selectedYear = button.dataset.year;
+        visibleCount = pageSize;
+        render();
+      }));
+    }
+
+    function eventCard(event) {
+      const title = escapeHtml(event.title);
+      const image = rootAsset(event.image);
+      const content = `
+        <div class="event-image"><img src="${image}" alt="${title}" loading="lazy" onerror="this.hidden=true; this.parentElement.classList.add('is-fallback')"><span class="event-image-fallback">画像を読み込めませんでした</span></div>
+        <div class="event-info"><p class="event-date">${event.date}</p><h3 class="event-title">${title}</h3>${event.links[0] ? '<p class="event-link-note">VIEW EVENT ↗</p>' : ''}</div>`;
+      return event.links[0]
+        ? `<a class="event-card" href="${escapeHtml(event.links[0].url)}" target="_blank" rel="noopener" aria-label="${title} のイベントページを新しいタブで開く">${content}</a>`
+        : `<article class="event-card">${content}</article>`;
+    }
+
+    function renderEvents() {
+      const events = eventsForYear();
+      document.getElementById('selected-year').textContent = selectedYear;
+      document.getElementById('year-count').textContent = `${events.length} EVENTS`;
+      document.getElementById('event-list').innerHTML = events.slice(0, visibleCount).map(eventCard).join('');
+      const moreButton = document.getElementById('more-button');
+      moreButton.hidden = visibleCount >= events.length;
+      moreButton.textContent = `さらに表示（残り ${events.length - visibleCount} 件）`;
+    }
+
+    function render() { renderTabs(); renderEvents(); }
+    document.getElementById('more-button').addEventListener('click', () => { visibleCount += pageSize; renderEvents(); });
+    render();
+  </script>
+</body>
+</html>
