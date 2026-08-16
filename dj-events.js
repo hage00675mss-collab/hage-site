@@ -24,10 +24,7 @@
       date: '2026.08.09',
       title: 'ほろくら',
       image: 'images/event1.jpg',
-      links: [
-        { url: 'https://twipla.jp/events/730679/', label: 'イベントページ' },
-        { url: 'https://x.com/holokurav', label: 'X' },
-      ],
+      links: [{ url: 'https://twipla.jp/events/730679/', label: 'イベントページ' }],
       detail: '2026.08.09 (Sun) 13:00〜　@ 日本橋Bar Guild',
       setlistImage: 'images/horokura-dj-setlist.png',
       thumbnailAction: 'setlist',
@@ -37,10 +34,7 @@
       date: '2026.04.04',
       title: 'ミミミュ♪ ～MEET MEAL MUSIC～',
       image: 'images/event3.jpg',
-      links: [
-        { url: 'https://x.com/meetmealmusic', label: 'X' },
-        { url: 'https://www.instagram.com/meetmealmusic', label: 'Instagram' },
-      ],
+      links: [{ url: 'https://x.com/meetmealmusic', label: 'X' }],
       detail: '2026.04.04 (Sat) 12:30〜　@ タグボート大正',
       thumbnailAction: 'disabled',
     },
