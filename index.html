@@ -1264,11 +1264,11 @@
     </div>
   -->
 
-  <dialog id="horokura-setlist-modal" class="event-setlist-modal" aria-labelledby="horokura-setlist-title">
+  <dialog id="event-setlist-modal" class="event-setlist-modal" aria-labelledby="event-setlist-title">
     <div class="event-setlist-modal-content">
-      <h2 id="horokura-setlist-title" class="sr-only">ほろくら DJセットリスト</h2>
+      <h2 id="event-setlist-title" class="sr-only"></h2>
       <button type="button" class="event-setlist-modal-close" aria-label="セットリストを閉じる" autofocus>×</button>
-      <img src="images/horokura-dj-setlist.png" alt="ほろくら DJセットリスト">
+      <img alt="">
     </div>
   </dialog>
 
@@ -1318,17 +1318,17 @@
     const currentEventIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm6.93 6h-2.95a15.65 15.65 0 00-1.38-3.56A8.03 8.03 0 0118.93 8zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14a8.1 8.1 0 010-4h3.38a16.5 16.5 0 000 4H4.26zm.81 2h2.95c.32 1.25.78 2.45 1.38 3.56A8.03 8.03 0 015.07 16zm2.95-8H5.07a8.03 8.03 0 014.33-3.56A15.65 15.65 0 008.02 8zM12 19.96a14.7 14.7 0 01-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.36 14H9.64a14.66 14.66 0 010-4h4.72a14.66 14.66 0 010 4zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95a8.03 8.03 0 01-4.33 3.56zM16.36 14a16.5 16.5 0 000-4h3.38a8.1 8.1 0 000-4h-3.38z"/></svg>';
     const escapeEventHtml = (value) => value.replace(/[&<>'"]/g, (character) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' })[character]);
     const currentEvents = [...window.DJ_EVENTS]
-      .filter((event) => !event.history)
       .sort((a, b) => b.date.localeCompare(a.date))
       .slice(0, 3);
     const eventsScroll = document.getElementById('eventsScroll');
     eventsScroll.innerHTML = currentEvents.map((event, index) => {
       const title = escapeEventHtml(event.title);
-      const thumbnail = event.thumbnailAction === 'setlist'
-        ? `<button type="button" class="work-thumb work-thumb-popup" data-modal-open="horokura-setlist-modal" aria-label="${title}のDJセットリストを表示"><img src="${event.image}" alt="${title}"></button>`
+      const thumbnail = event.thumbnailAction === 'setlist' && event.setlistImage
+        ? `<button type="button" class="work-thumb work-thumb-popup" data-modal-open="event-setlist-modal" data-setlist-image="${escapeEventHtml(event.setlistImage)}" data-setlist-title="${title}" aria-label="${title}のDJセットリストを表示"><img src="${event.image}" alt="${title}"></button>`
         : `<div class="work-thumb is-disabled"><img src="${event.image}" alt="${title}"></div>`;
       const links = event.links.map((link) => `<a href="${escapeEventHtml(link.url)}" target="_blank" rel="noopener" aria-label="${escapeEventHtml(link.label)}を新しいタブで開く">${currentEventIcon}</a>`).join('');
-      return `<div class="work-card reveal" style="transition-delay:${index * 0.1}s">${thumbnail}<div class="work-info"><div class="work-title">${title}</div><div class="work-desc">${escapeEventHtml(event.detail)}</div><div class="tags"><span class="tag">出演</span></div><div class="card-icons">${links}</div></div></div>`;
+      const detail = escapeEventHtml(event.detail || event.date);
+      return `<div class="work-card reveal" style="transition-delay:${index * 0.1}s">${thumbnail}<div class="work-info"><div class="work-title">${title}</div><div class="work-desc">${detail}</div><div class="tags"><span class="tag">出演</span></div><div class="card-icons">${links}</div></div></div>`;
     }).join('');
 
     // file:// で確認するときだけ、絶対パスの /dj-history を実ファイルへ補完する。
@@ -1479,10 +1479,15 @@
     setupCarousel('oshiScroll');
     setupCarousel('eventsScroll');
 
-    // ほろくら DJセットリストのポップアップ
+    // DJセットリストのポップアップ
     document.querySelectorAll('[data-modal-open]').forEach(trigger => {
       const dialog = document.getElementById(trigger.dataset.modalOpen);
       if (!dialog) return;
+      const title = trigger.dataset.setlistTitle;
+      const image = trigger.dataset.setlistImage;
+      dialog.querySelector('.sr-only').textContent = `${title} DJセットリスト`;
+      dialog.querySelector('img').src = image;
+      dialog.querySelector('img').alt = `${title} DJセットリスト`;
 
       const closeButton = dialog.querySelector('.event-setlist-modal-close');
       trigger.addEventListener('click', () => dialog.showModal());
