@@ -26,10 +26,12 @@
     .history-header h2 { font-family:var(--font-display); font-size:36px; font-weight:400; letter-spacing:2px; }
     .history-count { color:var(--gray); font-family:var(--font-ui); font-size:12px; letter-spacing:1.5px; white-space:nowrap; }
     .event-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px; }
-    .event-card { display:block; min-width:0; overflow:hidden; border:1px solid var(--card-border); border-radius:9px; background:var(--card-bg); box-shadow:0 10px 24px rgba(0,0,0,.17); transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease; }
-    a.event-card:hover { border-color:rgba(192,132,252,.65); box-shadow:0 16px 32px rgba(0,0,0,.35),0 0 22px rgba(139,47,201,.18); transform:scale(1.025); }
+    .event-card { display:block; position:relative; min-width:0; overflow:hidden; border:1px solid var(--card-border); border-radius:9px; background:var(--card-bg); box-shadow:0 10px 24px rgba(0,0,0,.17); transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease; }
+    .event-card.has-event-link { cursor:pointer; }
+    .event-card.has-event-link:hover { border-color:rgba(192,132,252,.65); box-shadow:0 16px 32px rgba(0,0,0,.35),0 0 22px rgba(139,47,201,.18); transform:scale(1.025); }
     article.event-card:hover { border-color:rgba(192,132,252,.48); box-shadow:0 16px 32px rgba(0,0,0,.28),0 0 18px rgba(139,47,201,.14); transform:scale(1.025); }
-    .event-card:focus-visible { outline:3px solid var(--purple-glow); outline-offset:3px; }
+    .event-card-link { position:absolute; inset:0; z-index:1; }
+    .event-card-link:focus-visible { outline:3px solid var(--purple-glow); outline-offset:-3px; }
     .event-image { position:relative; aspect-ratio:4 / 5; overflow:hidden; background:linear-gradient(135deg,#21112f,#10101e); }
     .event-image img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s ease; }
     .event-card:hover .event-image img { transform:scale(1.04); }
@@ -38,7 +40,17 @@
     .event-info { min-height:116px; padding:15px 16px 17px; }
     .event-date { color:var(--purple-glow); font-family:var(--font-ui); font-size:12px; font-weight:700; letter-spacing:1px; }
     .event-title { margin-top:5px; font-size:15px; font-weight:700; line-height:1.55; overflow-wrap:anywhere; }
-    .event-link-note { margin-top:7px; color:var(--gray2); font-family:var(--font-ui); font-size:10px; letter-spacing:1px; }
+    .event-actions { position:relative; z-index:2; display:flex; align-items:center; gap:8px; margin-top:7px; pointer-events:none; }
+    .event-link-note { color:var(--gray2); font-family:var(--font-ui); font-size:10px; letter-spacing:1px; }
+    .setlist-action { min-height:30px; padding:5px 10px; border:1px solid rgba(192,132,252,.48); border-radius:999px; background:rgba(139,47,201,.14); color:var(--purple-glow); cursor:pointer; font-family:var(--font-ui); font-size:10px; font-weight:700; letter-spacing:.9px; transition:background .2s,border-color .2s,color .2s,transform .2s; pointer-events:auto; }
+    .setlist-action:hover,.setlist-action:focus-visible { border-color:var(--purple-glow); background:rgba(139,47,201,.32); color:var(--white); outline:none; transform:translateY(-1px); }
+    .event-setlist-modal { position:fixed; inset:0; width:fit-content; height:fit-content; max-width:92vw; max-height:92dvh; margin:auto; padding:0; border:0; background:transparent; overflow:visible; }
+    .event-setlist-modal::backdrop { background:rgba(0,0,0,.78); }
+    .event-setlist-modal-content { position:relative; max-width:92vw; max-height:92dvh; border:1px solid rgba(192,132,252,.7); border-radius:10px; overflow:hidden; background:var(--bg2); box-shadow:0 0 36px rgba(139,47,201,.45); }
+    .event-setlist-modal img { display:block; width:auto; height:auto; max-width:calc(92vw - 2px); max-height:calc(92dvh - 2px); object-fit:contain; }
+    .event-setlist-modal-close { position:absolute; top:clamp(8px,1.5vw,16px); right:clamp(8px,1.5vw,16px); width:42px; height:42px; border:1px solid rgba(255,255,255,.45); border-radius:50%; background:rgba(10,10,15,.9); color:var(--white); font-size:28px; line-height:1; cursor:pointer; }
+    .event-setlist-modal-close:hover,.event-setlist-modal-close:focus-visible { background:var(--purple); outline:none; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
     .more-wrap { display:flex; justify-content:center; padding-top:30px; }
     .more-button { min-width:160px; padding:11px 20px; border:1px solid rgba(192,132,252,.5); border-radius:999px; background:rgba(139,47,201,.12); color:var(--white); cursor:pointer; font-family:var(--font-ui); font-size:13px; letter-spacing:1px; transition:background .2s,transform .2s; }
     .more-button:hover { background:rgba(139,47,201,.35); transform:translateY(-1px); }
@@ -61,6 +73,13 @@
     <section id="event-list" class="event-grid" aria-live="polite"></section>
     <div class="more-wrap"><button class="more-button" id="more-button" type="button" hidden>さらに表示</button></div>
   </main>
+  <dialog id="event-setlist-modal" class="event-setlist-modal" aria-labelledby="event-setlist-title">
+    <div class="event-setlist-modal-content">
+      <h2 id="event-setlist-title" class="sr-only"></h2>
+      <button type="button" class="event-setlist-modal-close" aria-label="セットリストを閉じる" autofocus>×</button>
+      <img alt="">
+    </div>
+  </dialog>
   <script>
     const historyEvents = [...window.DJ_EVENTS].sort((a, b) => b.date.localeCompare(a.date));
     const years = [...new Set(historyEvents.map((event) => event.date.slice(0, 4)))];
@@ -88,12 +107,20 @@
     function eventCard(event) {
       const title = escapeHtml(event.title);
       const image = rootAsset(event.image);
+      const eventLink = event.links[0];
+      const eventLinkOverlay = eventLink
+        ? `<a class="event-card-link" href="${escapeHtml(eventLink.url)}" target="_blank" rel="noopener" aria-label="${title} のイベントページを新しいタブで開く"></a>`
+        : '';
+      const setlistAction = event.setlistImage
+        ? `<button type="button" class="setlist-action" data-setlist-image="${escapeHtml(event.setlistImage)}" data-setlist-title="${title}" aria-label="${title}のDJセットリストを表示">♪ SETLIST</button>`
+        : '';
+      const actions = eventLink || setlistAction
+        ? `<div class="event-actions">${eventLink ? '<span class="event-link-note">VIEW EVENT ↗</span>' : ''}${setlistAction}</div>`
+        : '';
       const content = `
         <div class="event-image"><img src="${image}" alt="${title}" loading="lazy" onerror="this.hidden=true; this.parentElement.classList.add('is-fallback')"><span class="event-image-fallback">画像を読み込めませんでした</span></div>
-        <div class="event-info"><p class="event-date">${event.date}</p><h3 class="event-title">${title}</h3>${event.links[0] ? '<p class="event-link-note">VIEW EVENT ↗</p>' : ''}</div>`;
-      return event.links[0]
-        ? `<a class="event-card" href="${escapeHtml(event.links[0].url)}" target="_blank" rel="noopener" aria-label="${title} のイベントページを新しいタブで開く">${content}</a>`
-        : `<article class="event-card">${content}</article>`;
+        <div class="event-info"><p class="event-date">${event.date}</p><h3 class="event-title">${title}</h3>${actions}</div>`;
+      return `<article class="event-card${eventLink ? ' has-event-link' : ''}">${eventLinkOverlay}${content}</article>`;
     }
 
     function renderEvents() {
@@ -108,6 +135,17 @@
 
     function render() { renderTabs(); renderEvents(); }
     document.getElementById('more-button').addEventListener('click', () => { visibleCount += pageSize; renderEvents(); });
+    const setlistModal = document.getElementById('event-setlist-modal');
+    document.getElementById('event-list').addEventListener('click', (event) => {
+      const trigger = event.target.closest('.setlist-action');
+      if (!trigger) return;
+      setlistModal.querySelector('.sr-only').textContent = `${trigger.dataset.setlistTitle} DJセットリスト`;
+      setlistModal.querySelector('img').src = rootAsset(trigger.dataset.setlistImage);
+      setlistModal.querySelector('img').alt = `${trigger.dataset.setlistTitle} DJセットリスト`;
+      setlistModal.showModal();
+    });
+    setlistModal.querySelector('.event-setlist-modal-close').addEventListener('click', () => setlistModal.close());
+    setlistModal.addEventListener('click', (event) => { if (event.target === setlistModal) setlistModal.close(); });
     render();
   </script>
 </body>
