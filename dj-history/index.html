@@ -62,7 +62,7 @@
     <div class="more-wrap"><button class="more-button" id="more-button" type="button" hidden>さらに表示</button></div>
   </main>
   <script>
-    const historyEvents = [...window.DJ_HISTORY_EVENTS].sort((a, b) => b.date.localeCompare(a.date));
+    const historyEvents = [...window.DJ_EVENTS].sort((a, b) => b.date.localeCompare(a.date));
     const years = [...new Set(historyEvents.map((event) => event.date.slice(0, 4)))];
     const pageSize = 8;
     let selectedYear = years[0];
