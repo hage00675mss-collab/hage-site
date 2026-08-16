@@ -5,6 +5,14 @@
 (() => {
   const source = [
     {
+      date: '2026.10.03',
+      title: 'ミミミュ♪ MEET MEAL MUSIC',
+      image: 'images/dj-history/2026-10-03-mimimyu-meet-meal-music.jpg',
+      links: [{ url: 'https://x.com/meetmealmusic', label: 'X' }],
+      detail: '2026.10.03 (Sat) 13:30〜18:30（予定）　@ 大阪 タグボート大正　入場無料（要飲食代）',
+      thumbnailAction: 'disabled',
+    },
+    {
       date: '2026.08.30',
       title: 'BSJ -BiShoJo愛好会- 5th',
       image: 'images/event2.jpg',
