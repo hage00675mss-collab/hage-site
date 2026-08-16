@@ -32,6 +32,7 @@
       setlistImage: 'images/horokura-dj-setlist.png',
       thumbnailAction: 'setlist',
     },
+    { date: '2026.04.12', title: 'ほろくら', image: 'images/dj-history/2026-04-12-holokura.jpg', links: [{ url: 'https://twipla.jp/events/720839', label: 'イベントページ' }] },
     {
       date: '2026.04.04',
       title: 'ミミミュ♪ ～MEET MEAL MUSIC～',
@@ -43,6 +44,7 @@
       detail: '2026.04.04 (Sat) 12:30〜　@ タグボート大正',
       thumbnailAction: 'disabled',
     },
+    { date: '2026.01.10', title: 'ほろくら', image: 'images/dj-history/2026-01-10-holokura.jpg', links: [{ url: 'https://twipla.jp/events/707267', label: 'イベントページ' }] },
     { date: '2025.08.24', title: '8/24 関西VCP -関西Vtuber Club Party-', image: 'images/dj-history/2025-08-24-kansai-vcp.png', links: [{ url: 'https://twipla.jp/events/688869', label: 'イベントページ' }] },
     { date: '2024.06.30', title: 'アニクラっぽいこと Vol.13', image: 'images/dj-history/2024-06-30-anikura-ppoi-koto-vol-13.png', links: [{ url: 'https://twipla.jp/events/618640', label: 'イベントページ' }] },
     { date: '2024.06.22', title: 'キャラクター狂騒曲 Vol.1', image: 'images/dj-history/2024-06-22-character-kyosokyoku-vol-1.jpg', links: [{ url: 'https://twipla.jp/events/613994', label: 'イベントページ' }] },
