@@ -43,6 +43,7 @@
     { date: '2025.06.28', title: '【2025/06/28(土)13時@なんばMILULARI Legacy】第十七回 世代対決系アニクラ「0010(#ゼロテン)」【参加表明で500円OFF!!!】', image: 'images/dj-history/2025-06-28-0010-zeroten-vol-17.jpg', links: [{ url: 'https://twipla.jp/events/681808', label: 'イベントページ' }] },
     { date: '2025.05.30', title: '5/30(金) みんなで飯を食おう5月は春に食べたい野菜フェア！！/みんめしF/豚肉と厚揚げの甘辛卵炒めの日', image: 'images/dj-history/2025-05-30-minmeshi-f.jpg', links: [{ url: 'https://twipla.jp/events/646177', label: 'イベントページ' }] },
     { date: '2025.04.26', title: 'ほろくら', image: 'images/dj-history/2025-04-26-holokura.jpg', links: [{ url: 'https://twipla.jp/events/669310', label: 'イベントページ' }] },
+    { date: '2025.02.01', title: 'AxE_Reboot 01', image: 'images/dj-history/2025-02-01-axe-reboot-01.jpg', links: [{ url: 'https://twvt.me/AxE_reboot01', label: 'イベントページ' }] },
     { date: '2024.06.30', title: 'アニクラっぽいこと Vol.13', image: 'images/dj-history/2024-06-30-anikura-ppoi-koto-vol-13.png', links: [{ url: 'https://twipla.jp/events/618640', label: 'イベントページ' }] },
     { date: '2024.06.22', title: 'キャラクター狂騒曲 Vol.1', image: 'images/dj-history/2024-06-22-character-kyosokyoku-vol-1.jpg', links: [{ url: 'https://twipla.jp/events/613994', label: 'イベントページ' }] },
     { date: '2024.06.15', title: '電脳恋慕.EX', image: 'images/dj-history/2024-06-15-denno-renbo-ex.jpg', links: [{ url: 'https://twipla.jp/events/607660', label: 'イベントページ' }] },
