@@ -42,6 +42,7 @@
     { date: '2025.10.18', title: 'ミミミュ♪ act.12', image: 'images/dj-history/2025-10-18-mimimyu-act-12.jpeg', links: [{ url: 'https://x.com/meetmealmusic', label: 'X' }] },
     { date: '2025.09.07', title: 'アニクラっぽいことVol.17', image: 'images/dj-history/2025-09-07-anikura-ppoi-koto-vol-17.png', links: [{ url: 'https://twvt.me/animo_17', label: 'イベントページ' }] },
     { date: '2025.08.24', title: '8/24 関西VCP -関西Vtuber Club Party-', image: 'images/dj-history/2025-08-24-kansai-vcp.png', links: [{ url: 'https://twipla.jp/events/688869', label: 'イベントページ' }] },
+    { date: '2025.07.29', title: '俺達、いつだってサウナに行ったら伝えるんだけど -たりない夜のととのい方-', image: 'images/dj-history/2025-07-29-ore-tachi-sauna.jpg', links: [] },
     { date: '2025.06.28', title: '【2025/06/28(土)13時@なんばMILULARI Legacy】第十七回 世代対決系アニクラ「0010(#ゼロテン)」【参加表明で500円OFF!!!】', image: 'images/dj-history/2025-06-28-0010-zeroten-vol-17.jpg', links: [{ url: 'https://twipla.jp/events/681808', label: 'イベントページ' }] },
     { date: '2025.06.01', title: 'アニクラっぽいことVol.16', image: 'images/dj-history/2025-06-01-anikura-ppoi-koto-vol-16.jpg', links: [{ url: 'https://twvt.me/anipoi16_2025', label: 'イベントページ' }] },
     { date: '2025.05.30', title: '5/30(金) みんなで飯を食おう5月は春に食べたい野菜フェア！！/みんめしF/豚肉と厚揚げの甘辛卵炒めの日', image: 'images/dj-history/2025-05-30-minmeshi-f.jpg', links: [{ url: 'https://twipla.jp/events/646177', label: 'イベントページ' }] },
