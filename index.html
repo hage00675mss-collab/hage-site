@@ -1527,21 +1527,30 @@
     setupCarousel('eventsScroll');
 
     // DJセットリストのポップアップ
-    document.querySelectorAll('[data-modal-open]').forEach(trigger => {
-      const dialog = document.getElementById(trigger.dataset.modalOpen);
-      if (!dialog) return;
-      const title = trigger.dataset.setlistTitle;
-      const image = trigger.dataset.setlistImage;
-      dialog.querySelector('.sr-only').textContent = `${title} DJセットリスト`;
-      dialog.querySelector('img').src = image;
-      dialog.querySelector('img').alt = `${title} DJセットリスト`;
+    const setlistModal = document.getElementById('event-setlist-modal');
+    const setlistModalTitle = setlistModal.querySelector('.sr-only');
+    const setlistModalImage = setlistModal.querySelector('img');
+    const setlistModalClose = setlistModal.querySelector('.event-setlist-modal-close');
 
-      const closeButton = dialog.querySelector('.event-setlist-modal-close');
-      trigger.addEventListener('click', () => dialog.showModal());
-      closeButton.addEventListener('click', () => dialog.close());
-      dialog.addEventListener('click', event => {
-        if (event.target === dialog) dialog.close();
-      });
+    eventsScroll.addEventListener('click', (event) => {
+      const trigger = event.target.closest('.setlist-action[data-modal-open="event-setlist-modal"]');
+      if (!trigger) return;
+      event.preventDefault();
+      event.stopPropagation();
+
+      const title = trigger.dataset.setlistTitle || '';
+      const image = trigger.dataset.setlistImage || '';
+      if (!image) return;
+
+      setlistModalTitle.textContent = `${title} DJセットリスト`;
+      setlistModalImage.src = image;
+      setlistModalImage.alt = `${title} DJセットリスト`;
+      setlistModal.showModal();
+    });
+
+    setlistModalClose.addEventListener('click', () => setlistModal.close());
+    setlistModal.addEventListener('click', event => {
+      if (event.target === setlistModal) setlistModal.close();
     });
 
     const sections = document.querySelectorAll('section[id], div[id]');
