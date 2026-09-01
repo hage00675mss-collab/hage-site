@@ -18,7 +18,8 @@
       image: 'images/event2.jpg',
       links: [{ url: 'https://twipla.jp/events/691547', label: 'イベントページ' }],
       detail: '2026.08.30 (Sun) 13:00〜　@ 日本橋Bar Guild',
-      thumbnailAction: 'disabled',
+      setlistImage: 'images/dj-history/2026-08-30-bsj-bishojo-aikokai-5th-dj-setlist.png',
+      thumbnailAction: 'setlist',
     },
     {
       date: '2026.08.09',
