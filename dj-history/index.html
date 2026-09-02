@@ -136,13 +136,40 @@
     function render() { renderTabs(); renderEvents(); }
     document.getElementById('more-button').addEventListener('click', () => { visibleCount += pageSize; renderEvents(); });
     const setlistModal = document.getElementById('event-setlist-modal');
+    const setlistModalTitle = setlistModal.querySelector('.sr-only');
+    const setlistModalImage = setlistModal.querySelector('img');
+    let setlistRequestId = 0;
+
+    const openSetlistModal = (title, image) => {
+      const requestId = ++setlistRequestId;
+      if (setlistModal.open) setlistModal.close();
+
+      setlistModalTitle.textContent = '';
+      setlistModalImage.alt = '';
+      setlistModalImage.removeAttribute('src');
+
+      const preloadedImage = new Image();
+      preloadedImage.onload = () => {
+        if (requestId !== setlistRequestId) return;
+        setlistModalTitle.textContent = `${title} DJセットリスト`;
+        setlistModalImage.src = preloadedImage.src;
+        setlistModalImage.alt = `${title} DJセットリスト`;
+        setlistModal.showModal();
+      };
+      preloadedImage.onerror = () => {
+        if (requestId !== setlistRequestId) return;
+        setlistModalImage.removeAttribute('src');
+      };
+      preloadedImage.src = rootAsset(image);
+    };
+
     document.getElementById('event-list').addEventListener('click', (event) => {
       const trigger = event.target.closest('.setlist-action');
       if (!trigger) return;
-      setlistModal.querySelector('.sr-only').textContent = `${trigger.dataset.setlistTitle} DJセットリスト`;
-      setlistModal.querySelector('img').src = rootAsset(trigger.dataset.setlistImage);
-      setlistModal.querySelector('img').alt = `${trigger.dataset.setlistTitle} DJセットリスト`;
-      setlistModal.showModal();
+      const title = trigger.dataset.setlistTitle || '';
+      const image = trigger.dataset.setlistImage || '';
+      if (!image) return;
+      openSetlistModal(title, image);
     });
     setlistModal.querySelector('.event-setlist-modal-close').addEventListener('click', () => setlistModal.close());
     setlistModal.addEventListener('click', (event) => { if (event.target === setlistModal) setlistModal.close(); });
