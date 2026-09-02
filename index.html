@@ -1531,6 +1531,30 @@
     const setlistModalTitle = setlistModal.querySelector('.sr-only');
     const setlistModalImage = setlistModal.querySelector('img');
     const setlistModalClose = setlistModal.querySelector('.event-setlist-modal-close');
+    let setlistRequestId = 0;
+
+    const openSetlistModal = (title, image) => {
+      const requestId = ++setlistRequestId;
+      if (setlistModal.open) setlistModal.close();
+
+      setlistModalTitle.textContent = '';
+      setlistModalImage.alt = '';
+      setlistModalImage.removeAttribute('src');
+
+      const preloadedImage = new Image();
+      preloadedImage.onload = () => {
+        if (requestId !== setlistRequestId) return;
+        setlistModalTitle.textContent = `${title} DJセットリスト`;
+        setlistModalImage.src = preloadedImage.src;
+        setlistModalImage.alt = `${title} DJセットリスト`;
+        setlistModal.showModal();
+      };
+      preloadedImage.onerror = () => {
+        if (requestId !== setlistRequestId) return;
+        setlistModalImage.removeAttribute('src');
+      };
+      preloadedImage.src = image;
+    };
 
     eventsScroll.addEventListener('click', (event) => {
       const trigger = event.target.closest('.setlist-action[data-modal-open="event-setlist-modal"]');
@@ -1542,10 +1566,7 @@
       const image = trigger.dataset.setlistImage || '';
       if (!image) return;
 
-      setlistModalTitle.textContent = `${title} DJセットリスト`;
-      setlistModalImage.src = image;
-      setlistModalImage.alt = `${title} DJセットリスト`;
-      setlistModal.showModal();
+      openSetlistModal(title, image);
     });
 
     setlistModalClose.addEventListener('click', () => setlistModal.close());
