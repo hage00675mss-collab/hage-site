@@ -5,6 +5,13 @@
 (() => {
   const source = [
     {
+      date: '2026.11.07',
+      title: 'VirtuaDive vol.73 #バーチャダイブ',
+      image: 'images/dj-history/2026-11-07-virtuadive-vol-73.webp',
+      links: [{ url: 'https://livepocket.jp/e/1v2mc', label: 'イベントページ' }],
+      detail: '2026.11.07 (Sat) 13:00〜19:00　@ Entertainment Bar Guild',
+    },
+    {
       date: '2026.10.03',
       title: 'ミミミュ♪ MEET MEAL MUSIC',
       image: 'images/dj-history/2026-10-03-mimimyu-meet-meal-music.jpg',
