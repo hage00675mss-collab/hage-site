@@ -10,6 +10,8 @@
       image: 'images/dj-history/2026-11-07-virtuadive-vol-73.webp',
       links: [{ url: 'https://livepocket.jp/e/1v2mc', label: 'イベントページ' }],
       detail: '2026.11.07 (Sat) 13:00〜19:00　@ Entertainment Bar Guild',
+      setlistImage: 'images/dj-history/2026-11-07-virtuadive-vol-73-dj-setlist.png',
+      thumbnailAction: 'setlist',
     },
     {
       date: '2026.10.03',
