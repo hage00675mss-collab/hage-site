@@ -402,6 +402,7 @@
        Carousel controls (shared)
     =========================== */
     .carousel-wrap { position: relative; }
+    .works-scroll.is-looping, .oshi-scroll.is-looping { scroll-snap-type: none; }
     .carousel-arrow {
       position: absolute;
       top: 50%;
@@ -1503,30 +1504,138 @@
       }, { passive: false });
     });
 
-    // Carousel arrows, position dots, and wheel-to-horizontal-scroll
-    // (replaces the native scrollbar across Favorite Works / Oshi List / DJ-Events)
-    function setupCarousel(scrollId) {
+    function setupCarouselLoop(scrollEl, wrap, cards) {
+      const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      const canHover = matchMedia('(hover: hover)');
+      const copies = [...cards, cards[0]].map(card => {
+        const copy = card.cloneNode(true);
+        copy.classList.add('visible');
+        copy.setAttribute('aria-hidden', 'true');
+        copy.querySelectorAll('a').forEach(link => { link.tabIndex = -1; });
+        return copy;
+      });
+      scrollEl.append(...copies);
+      scrollEl.classList.add('is-looping');
+
+      let period = 0;
+      let inView = false;
+      let touching = false;
+      let resumeTimer = 0;
+      let frame = 0;
+      let previousTime;
+      let remainder = 0;
+
+      function position(left) {
+        return ((left % period) + period) % period;
+      }
+
+      function animate(time) {
+        if (previousTime !== undefined) {
+          // Native scroll positions are rounded to pixels. Carry the remainder.
+          remainder += Math.min(time - previousTime, 50) * 0.032;
+          const pixels = Math.floor(remainder);
+          if (pixels) {
+            remainder -= pixels;
+            scrollEl.scrollLeft = position(scrollEl.scrollLeft - pixels);
+          }
+        }
+        previousTime = time;
+        frame = requestAnimationFrame(animate);
+      }
+
+      function updatePlayback() {
+        const playing = period > scrollEl.clientWidth && inView && !reducedMotion.matches &&
+          !touching && !resumeTimer && !(canHover.matches && wrap.matches(':hover')) &&
+          !wrap.querySelector(':focus-visible');
+        if (playing && !frame) frame = requestAnimationFrame(animate);
+        if (!playing && frame) {
+          cancelAnimationFrame(frame);
+          frame = 0;
+          previousTime = undefined;
+        }
+      }
+
+      function pauseBriefly() {
+        clearTimeout(resumeTimer);
+        resumeTimer = setTimeout(() => {
+          resumeTimer = 0;
+          updatePlayback();
+        }, 1300);
+        updatePlayback();
+      }
+
+      function measure() {
+        // The distance between repeated cards includes the gap at the seam.
+        period = copies[0].offsetLeft - cards[0].offsetLeft;
+        updatePlayback();
+      }
+
+      let revealed = false;
+      new IntersectionObserver(([entry]) => {
+        inView = entry.isIntersecting;
+        if (inView && !revealed) {
+          revealed = true;
+          cards.forEach(card => card.classList.add('visible'));
+          pauseBriefly();
+        }
+        updatePlayback();
+      }).observe(scrollEl);
+      new ResizeObserver(measure).observe(scrollEl);
+      measure();
+      reducedMotion.addEventListener('change', updatePlayback);
+      ['pointerenter', 'pointerleave', 'focusin'].forEach(event => {
+        wrap.addEventListener(event, updatePlayback);
+      });
+      wrap.addEventListener('focusout', () => queueMicrotask(updatePlayback));
+      scrollEl.addEventListener('touchstart', () => {
+        touching = true;
+        updatePlayback();
+      }, { passive: true });
+      ['touchend', 'touchcancel'].forEach(event => {
+        scrollEl.addEventListener(event, e => {
+          touching = e.targetTouches.length > 0;
+          pauseBriefly();
+        });
+      });
+
+      return {
+        position: () => position(scrollEl.scrollLeft),
+        stepWidth: () => period / cards.length,
+        move(direction) {
+          pauseBriefly();
+          const step = period / cards.length;
+          let left = position(scrollEl.scrollLeft);
+          if (direction < 0 && left < step) left += period;
+          scrollEl.scrollLeft = left;
+          scrollEl.scrollBy({ left: direction * step, behavior: reducedMotion.matches ? 'instant' : 'smooth' });
+        }
+      };
+    }
+
+    // Shared carousel arrows and position dots.
+    function setupCarousel(scrollId, autoplay = false) {
       const scrollEl = document.getElementById(scrollId);
       if (!scrollEl) return;
       const wrap = scrollEl.closest('.carousel-wrap');
       const leftBtn = wrap ? wrap.querySelector('.carousel-arrow-left') : null;
       const rightBtn = wrap ? wrap.querySelector('.carousel-arrow-right') : null;
       const dotsEl = document.querySelector('.carousel-dots[data-for="' + scrollId + '"]');
+      const cards = [...scrollEl.querySelectorAll('.work-card')];
+      const loop = autoplay && cards.length > 1 ? setupCarouselLoop(scrollEl, wrap, cards) : null;
 
       function stepWidth() {
-        const card = scrollEl.querySelector('.work-card');
+        const card = cards[0];
         const gap = parseInt(getComputedStyle(scrollEl).gap, 10) || 16;
         return card ? card.offsetWidth + gap : scrollEl.clientWidth;
       }
 
-      function cardCount() {
-        return scrollEl.querySelectorAll('.work-card').length;
-      }
+      let activeDot;
 
       function buildDots() {
         if (!dotsEl) return;
         dotsEl.innerHTML = '';
-        const count = Math.max(1, cardCount());
+        activeDot = undefined;
+        const count = Math.max(1, cards.length);
         for (let i = 0; i < count; i++) {
           const dot = document.createElement('span');
           dot.className = 'dot';
@@ -1536,31 +1645,40 @@
 
       function updateDots() {
         if (!dotsEl) return;
-        const dots = dotsEl.querySelectorAll('.dot');
-        if (!dots.length) return;
-        const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+        const count = dotsEl.children.length;
         let index;
-        if (scrollEl.scrollLeft >= maxScroll - 4) {
-          index = dots.length - 1;
+        if (loop) {
+          index = Math.round(loop.position() / loop.stepWidth()) % count;
         } else {
-          index = Math.round(scrollEl.scrollLeft / stepWidth());
+          const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
+          index = scrollEl.scrollLeft >= maxScroll - 4
+            ? count - 1
+            : Math.max(0, Math.min(count - 1, Math.round(scrollEl.scrollLeft / stepWidth())));
         }
-        index = Math.max(0, Math.min(dots.length - 1, index));
-        dots.forEach((d, i) => d.classList.toggle('active', i === index));
+        const dot = dotsEl.children[index];
+        if (dot === activeDot) return;
+        activeDot?.classList.remove('active');
+        dot?.classList.add('active');
+        activeDot = dot;
       }
 
       function updateArrows() {
+        if (loop) return;
         const maxScroll = scrollEl.scrollWidth - scrollEl.clientWidth;
         if (leftBtn) leftBtn.classList.toggle('is-hidden', scrollEl.scrollLeft <= 4);
         if (rightBtn) rightBtn.classList.toggle('is-hidden', scrollEl.scrollLeft >= maxScroll - 4);
       }
 
-      if (leftBtn) leftBtn.addEventListener('click', () => {
-        scrollEl.scrollBy({ left: -stepWidth(), behavior: 'smooth' });
-      });
-      if (rightBtn) rightBtn.addEventListener('click', () => {
-        scrollEl.scrollBy({ left: stepWidth(), behavior: 'smooth' });
-      });
+      function move(direction) {
+        if (loop) {
+          loop.move(direction);
+        } else {
+          scrollEl.scrollBy({ left: direction * stepWidth(), behavior: 'smooth' });
+        }
+      }
+
+      if (leftBtn) leftBtn.addEventListener('click', () => move(-1));
+      if (rightBtn) rightBtn.addEventListener('click', () => move(1));
 
       let ticking = false;
       scrollEl.addEventListener('scroll', () => {
@@ -1583,8 +1701,8 @@
       updateDots();
       updateArrows();
     }
-    setupCarousel('worksScroll');
-    setupCarousel('oshiScroll');
+    setupCarousel('worksScroll', true);
+    setupCarousel('oshiScroll', true);
     setupCarousel('eventsScroll');
 
     // DJセットリストのポップアップ
