@@ -1536,7 +1536,7 @@
           const pixels = Math.floor(remainder);
           if (pixels) {
             remainder -= pixels;
-            scrollEl.scrollLeft = position(scrollEl.scrollLeft - pixels);
+            scrollEl.scrollLeft = position(scrollEl.scrollLeft + pixels);
           }
         }
         previousTime = time;
